@@ -1,22 +1,11 @@
-const mongoose = require("mongoose");
+// models/User.js
+const mongoose = require('mongoose');
 
-const User = mongoose.model(
-  "User",
-  new mongoose.Schema({
-    username: String,
-    email: String,
-    password: String,
-    roles: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Role"
-      }
-    ],
-    tokens: {
-        token:String,
-        createdAt: Date
-    }
-  })
-);
+const UserSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true }, // Change to email field
+  password: { type: String, required: true },
+  token: { type: String }, // Store JWT token
+  tokenExpiry: { type: Date } // Store token expiry time
+});
 
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

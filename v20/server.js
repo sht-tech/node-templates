@@ -1,25 +1,27 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const mongoose = require('mongoose');
+const routes = require('./routes/indexRoutes'); // Import centralized routes
+
+const app = express();
 const cors = require("cors");
 app.use(cors());
-
+// Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// const db = require
 
+// MongoDB connection string
+const mongoURI = 'mongodb+srv://trinetech3:qGyTJqbvJzhCDg5f@trine.puklq.mongodb.net/trine?ssl=true&replicaSet=atlas-10nh35-shard-0&authSource=admin&retryWrites=true&w=majority&appName=trine'; // Replace 'mydatabase' with your DB name
 
+// Connect to MongoDB
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+	.then(() => console.log('MongoDB connected'))
+	.catch(err => console.error('MongoDB connection error:', err));
 
-require('./routes/user.js')(app)
-const db = require("./models");
-db.mongoose.connect('mongodb+srv://trinetech3:qGyTJqbvJzhCDg5f@trine.puklq.mongodb.net/trine?ssl=true&replicaSet=atlas-10nh35-shard-0&authSource=admin&retryWrites=true&w=majority&appName=trine,').then(() => {
-    console.log("Successfully connect to MongoDB.");
-    // initial();
-  })
-  .catch(err => {
-    console.error("Connection error", err);
-    process.exit();
-  });
+// Use centralized routes
+app.use(routes);
 
-
-
-app.listen(3000, ()=>console.log('running...'))
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+	console.log(`Server running on http://localhost:${PORT}`);
+});
