@@ -1,11 +1,11 @@
 // controllers/authController.js
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const User = require('../models/user');
 
 // Generate JWT and update token expiry
 const generateToken = (userId) => {
-	const token = jwt.sign({ id: userId }, 'your_jwt_secret', { expiresIn: '1h' }); // Replace 'your_jwt_secret' with your secret key
+	const token = jwt.sign({ id: userId }, 'trine', { expiresIn: '1h' }); // Replace 'your_jwt_secret' with your secret key
 	const expiry = new Date();
 	expiry.setHours(expiry.getHours() + 1); // Set token expiry time to 1 hour
 	return { token, expiry };

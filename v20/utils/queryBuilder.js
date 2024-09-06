@@ -44,5 +44,9 @@ module.exports = (queryParams) => {
         }
     });
 
-    return { query, options };
+    displayItems = queryParams.displayItems.map(u => {
+        return { [u]: 1 }
+    })
+
+    return { query, options, displayItems };
 };
